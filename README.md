@@ -1,6 +1,7 @@
 # Process Reward Model Training and Reinforcement Learning from Human Feedback
 
 We borrow the environment setting from `https://github.com/RLHFlow/Online-RLHF`
+This was originated from https://github.com/hanningzhang/ER-PRM
 ## Environment Setup
 
 - clone and create a conda environment
