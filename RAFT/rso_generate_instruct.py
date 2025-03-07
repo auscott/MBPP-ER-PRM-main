@@ -207,7 +207,7 @@ if __name__ == "__main__":
         prompt = prompt[int(len(prompt)*args.local_rank/args.num_gpus):int(len(prompt)*(args.local_rank+1)/args.num_gpus)]
     
     #print(prompt)  
-    batch_prompt = batch_data(prompt, batch_size=args.batch_size)
+    batch_prompt = batch_data(prompt, batch_size=args.batch_size) # make this to different batch
     llm = LLM(model=args.model_name_or_path,tensor_parallel_size=args.tensor_parallel_size, dtype = "float16",enforce_eager=True, gpu_memory_utilization=0.85,swap_space=32,max_model_len=1024)
     tokenizer = llm.get_tokenizer()
     stop_token_ids = [tokenizer.eos_token_id, tokenizer.convert_tokens_to_ids("<|eot_id|>")]

@@ -217,7 +217,7 @@ def calculate_step_score(sample): # most important
     norm_score = round(label,3)
     step_score.append(norm_score)
         
-    return step_score
+    return step_score #each prompt has one normalised score (from all completions)
 
 if __name__ == "__main__":
     
@@ -234,7 +234,7 @@ if __name__ == "__main__":
         if "The answer is" in data[i]['prompt']:
             finish_idx.append(i) # record which string of the list is the finishing sentence in the prompt
             
-    for i in tqdm(range(len(finish_idx))):
+    for i in tqdm(range(len(finish_idx))): # no need this for mbpp, they are already grouped by task id
         if i == 0:
             instance = process_list(data[:finish_idx[i]+1])
         else:

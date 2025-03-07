@@ -15,8 +15,35 @@ import torch
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, HfArgumentParser, pipeline
 
+from huggingface_hub import login
+login(token='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')
+
+# Set the environment variable
+import os
+import gc
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 # os.environ['VLLM_TARGET_DEVICE'] = 'cpu'
-model_name = 'deepseek-ai/deepseek-math-7b-rl'
+# model_name = 'deepseek-ai/deepseek-math-7b-rl' # occupied 42782.00 MB this also works
+# model_name = 'codellama/CodeLlama-7b-Python-hf'  # occupied 42002.00 MB this also works
+torch.cuda.empty_cache()
+# gc.collect()
+# del llm
+# model_name = 'meta-llama/Llama-3.2-1B-Instruct' # this work for 48GB GPU
+model_name = 'deepseek-ai/deepseek-coder-7b-instruct-v1.5'
+
+def check_gpu_memory():
+    if torch.cuda.is_available():
+        total_memory = torch.cuda.get_device_properties(0).total_memory / (1024 ** 2)  # Convert to MB
+        allocated_memory = torch.cuda.memory_allocated() / (1024 ** 2)  # Convert to MB
+        cached_memory = torch.cuda.memory_reserved() / (1024 ** 2)  # Convert to MB
+
+        print(f"Total GPU Memory: {total_memory:.2f} MB")
+        print(f"Allocated Memory: {allocated_memory:.2f} MB")
+        print(f"Cached Memory: {cached_memory:.2f} MB")
+    else:
+        print("No GPU available.")
+
+check_gpu_memory()
 
 @dataclass
 class ScriptArguments:
@@ -24,7 +51,7 @@ class ScriptArguments:
     dataset_path: str = field(default="HanningZhang/deepseek-gsm-new", metadata={"help": "dataset path for generator data."})
     output_dir: str = field(default="mc_data",metadata={"help":"location to store the PRM data."})
     tensor_parallel_size: int = field(default=1,metadata={"help":""}) # indicates the number of parallel processes, for distributed programming
-    num_gpus: int = field(default=2)
+    num_gpus: int = field(default=1)
     local_rank:int = field(default=0)
     sampling_num:int = field(default=16)
     split:int = field(default=0)
