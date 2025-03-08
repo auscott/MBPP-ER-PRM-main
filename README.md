@@ -12,7 +12,7 @@ In **SRA-MCTS** (Self-driven Reasoning Augmentation with Monte Carlo Tree Search
 
 ## Data Generation Process
 
-The MBPP-MCTS data generation consists of the following steps:
+All main code for the MBPP-MCTS data generation is contained within the `MBPP` folder. The data generation process consists of the following steps:
 
 1. **Right Solution Reasoning**: The LLM is prompted to construct and explain the reasoning based on the provided question and solution (see `generat_reasoning_from_train_data.py`). The reasoning with the highest likelihood of achieving the correct solution is identified.
 
