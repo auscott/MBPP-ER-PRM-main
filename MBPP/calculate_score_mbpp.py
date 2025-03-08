@@ -2,26 +2,17 @@ import json
 import re
 
 import pandas as pd
-import numpy as np
 from tqdm import tqdm
-import stanza
-from dataclasses import dataclass, field
-from typing import Optional
-from vllm import LLM, SamplingParams
-from util import is_number, extract_answer_number
-#from eval_math import remove_boxed, process_results
 from pathlib import Path
-import util
-import time
 import os
 import math
-import argparse
 from MBPP_eval.human_eval.evaluation import evaluate_functional_correctness
-
+from huggingface_hub import login
+login(token="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")
 
 import torch
 from datasets import load_dataset
-from transformers import AutoModelForCausalLM, AutoTokenizer, HfArgumentParser, pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 model_name_or_path = 'deepseek-ai/deepseek-coder-7b-instruct-v1.5'
 saved_path = 'generated_format_data_score.json'
@@ -424,4 +415,6 @@ if __name__ == "__main__":
 
     with open("autoregressive_deepseek_mbpp_data.json", 'w') as f:
         json.dump(mcts_autoregressive, f, indent=4, ensure_ascii=False)
+
+    print("finish saving and the process")
 
